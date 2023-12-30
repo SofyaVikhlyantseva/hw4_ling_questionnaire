@@ -12,8 +12,8 @@ matplotlib.use('agg')  # чтобы избежать UserWarning: Starting a Mat
 
 app = Flask(__name__)  # instance Flaskа
 app.config['SQLALCHEMY_DATABASE_URI'] = \
-    'sqlite:////Users/sofyavikhlyantseva/PycharmProjects/test_project/questionnaire/questionnaire.db'  # подключение БД
-# (sqlite:/// - это тип базы; относительные пути не работают, поэтому указываем абсолютный)
+    'sqlite:///questionnaire.db'  # подключение БД
+# (sqlite:/// - это тип базы)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # чтобы нормально работать с изменениями в базе (коммиты и
 # обновления информации, если такие есть)
 

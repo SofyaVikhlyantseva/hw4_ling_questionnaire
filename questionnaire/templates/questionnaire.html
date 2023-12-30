@@ -1,0 +1,54 @@
+<!-- Страница анкеты -->
+<!-- Этим кодом расширяем base.html и заполняем блоки информацией -->
+{% extends 'base.html' %}
+
+{% block title %} Опрос {% endblock %}
+
+{% block content %}
+    <!-- Отправляем полученные от пользователя данные по адресу results для передачи их серверу -->
+    <!-- Сервер должен обработать запрос методом GET -->
+    <form action="/results" method = 'GET'>
+        <fieldset>
+        <legend><b>Опрос носителей русского языка о прагматике употребления лексемы <i>зачастую</i></b></legend>
+            Продолжите утверждения. Пожалуйста, отвечайте, ориентируясь на свой языковой опыт и интуицию, правильных
+            ответов нет.<br><br>
+            Слово <b><i>зачастую</i></b> скорее характерно для представителей…<br>
+        <!-- Тип данных radio для выбора одного варианта из предложенных -->
+        <input type="radio" name="generation" value="younger" required>молодого поколения.<br>
+        <input type="radio" name="generation" value="older">старшего поколения.<br><br>
+            Слово <b><i>зачастую</i></b> скорее употребит человек, обладающий…<br>
+        <input type="radio" name="culture_of_speech" value="low" required>низкой культурой речи.<br>
+        <input type="radio" name="culture_of_speech" value="high">высокой культурой речи.<br><br>
+            По стилистической окраске слово <b><i>зачастую</i></b> скорее…<br>
+        <input type="radio" name="stylistic_coloring" value="colloquial" required>разговорное.<br>
+        <input type="radio" name="stylistic_coloring" value="neutral">нейтральное.<br>
+        <input type="radio" name="stylistic_coloring" value="literary">книжное.<br><br>
+            Слово <b><i>зачастую</i></b> скорее…<br>
+        <input type="radio" name="intellectual_speech" value="typical" required>характерно для речи интеллигентного
+            человека.<br>
+        <input type="radio" name="intellectual_speech" value="not_typical">не характерно для речи интеллигентного
+            человека.<br><br><br>
+            Ваш полный возраст (только число):<br>
+        <input type="text" name="age" required pattern='[0-9]+'><br><br>
+            Ваш уровень образования:<br>
+        <input type="radio" name="level_of_education" value="school_pupil" required>школьник<br>
+        <input type="radio" name="level_of_education" value="student">студент<br>
+        <input type="radio" name="level_of_education" value="higher_education">высшее<br>
+        <input type="radio" name="level_of_education" value="secondary_education">среднее общее (окончена только школа)
+            <br>
+        <input type="radio" name="level_of_education" value="specialized_secondary_education">среднее специальное
+            (получил(-а)/получаю среднее специальное образование)<br>
+        <input type="radio" name="level_of_education" value="academic_degree">научная степень (кандидат/доктор наук)
+            <br><br>
+            Ваш профиль образования/сфера текущей профессиональной деятельности (если вы работаете):<br>
+        <input type="radio" name="specialization" value="STEM" required>естественные науки, технология, инженерия,
+            математика<br>
+        <input type="radio" name="specialization" value="HASS">гуманитарные науки, искусство, социальные науки<br>
+        <input type="radio" name="specialization" value="no_specialization">школьник, учусь в классе без профиля, не
+            работаю<br>
+        <input type="radio" name="specialization" value="">Другое <input type="text" name="other" /><br><br>
+        <p><input type="submit" value="Отправить"></p>
+        </fieldset>
+    </form>
+    <p><a href="/statistics">Статистика</a></p>
+{% endblock %}

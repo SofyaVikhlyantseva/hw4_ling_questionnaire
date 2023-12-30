@@ -110,7 +110,7 @@ def statistics():
     plt.pie(sizes, labels=labels, autopct='%.2f')
     plt.title('Распределение информантов по уровню образования')
     # Сохраняем график в папку static как картинку через plt.savefig()
-    plt.savefig('static/level_of_education_distribution.png')
+    plt.savefig('/home/sofyavikhlyantseva/hw4_ling_questionnaire/questionnaire/static/level_of_education_distribution.png')
     plt.clf()  # для очистки текущего графика (чтобы labels предыдущей диаграммы не накладывались на новые)
     # Самый частый ответ на вопрос 1
     most_popular_q1_answer = db.session.query(Answers.q1, func.count(Answers.q1)).group_by(Answers.q1). \

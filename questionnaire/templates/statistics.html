@@ -1,0 +1,41 @@
+<!-- Страница со статистикой -->
+<!-- Этим кодом расширяем base.html и заполняем блоки информацией -->
+{% extends 'base.html' %}
+
+{% block title %} Статистика {% endblock %}
+
+{% block content %}
+    <h1>Статистика по метаданным</h1>
+    <table>
+        <tr>
+            <td>Общее число опрошенных</td>
+            <td>{{ all_info['total_num_of_respondents'] }}</td>
+        </tr>
+        <tr>
+            <td>Максимальный возраст информантов</td>
+            <td>{{ all_info['age_max'] }}</td>
+        </tr>
+        <tr>
+            <td>Минимальный возраст информантов</td>
+            <td>{{ all_info['age_min'] }}</td>
+        </tr>
+        <tr>
+            <td>Средний возраст информантов, округлённый до ближайшего целого</td>
+            <td>{{ all_info['age_mean'] }}</td>
+        </tr>
+        <tr>
+            <td><img src="static/level_of_education_distribution.png"></td>
+        </tr>
+    </table><br><br>
+    <h1>Статистика по вопросам анкеты</h1>
+        <p><b>Бóльшая часть респондентов</b> считает лексему <b><i>зачастую</i></b> в своей «классической», базовой
+            роли квантитативного наречия:</p>
+        <ul>
+            <li>скорее характерной для представителей
+                {% if all_info['most_popular_q1_answer'] == 'older' %} старшего поколения
+                {% else %} молодого поколения
+                {% endif %}
+                (так ответили {{ all_info['most_popular_q1_answer_percentage'] }}% опрошенных);
+            </li>
+        </ul>
+{% endblock %}

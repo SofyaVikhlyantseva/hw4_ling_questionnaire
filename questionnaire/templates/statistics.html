@@ -5,37 +5,71 @@
 {% block title %} Статистика {% endblock %}
 
 {% block content %}
-    <h1>Статистика по метаданным</h1>
+    <h1 class="display-5">Статистика по метаданным</h1>
     <table>
         <tr>
             <td>Общее число опрошенных</td>
-            <td>{{ all_info['total_num_of_respondents'] }}</td>
+            <td>{{ all_info['total_num_of_respondents'] }} человек</td>
         </tr>
         <tr>
             <td>Максимальный возраст информантов</td>
-            <td>{{ all_info['age_max'] }}</td>
+            <td>{{ all_info['age_max'] }} лет</td>
         </tr>
         <tr>
             <td>Минимальный возраст информантов</td>
-            <td>{{ all_info['age_min'] }}</td>
+            <td>{{ all_info['age_min'] }} лет</td>
         </tr>
         <tr>
             <td>Средний возраст информантов, округлённый до ближайшего целого</td>
-            <td>{{ all_info['age_mean'] }}</td>
+            <td>{{ all_info['age_mean'] }} лет</td>
         </tr>
         <tr>
             <td><img src="{{ url_for('static', filename='images/level_of_education_distribution.png') }}" /></td>
         </tr>
-    </table><br><br>
-    <h1>Статистика по вопросам анкеты</h1>
+        <tr>
+            <td>Распределение информантов по профилю образования/сфере текущей проф. деятельности:</td>
+        </tr>
+    </table>
+    <br>
+    <ul class="list-group">
+        {% for specialization, percentage in all_info['specialization'].items() %}
+            <li class="list-group-item">{% if specialization == 'STEM' %} естественные науки, технология, инженерия, 
+                математика
+                {% elif specialization == 'HASS' %} гуманитарные науки, искусство, социальные науки
+                {% else %} школьник, учусь в классе без профиля, не работаю
+                {% endif %} — {{ percentage }}% опрошенных</li>
+        {% endfor %}
+    </ul>
+    <br>
+    <h1 class="display-5">Статистика по вопросам анкеты</h1><br>
         <p><b>Бóльшая часть респондентов</b> считает лексему <b><i>зачастую</i></b> в своей «классической», базовой
             роли квантитативного наречия:</p>
-        <ul>
-            <li>скорее характерной для представителей
-                {% if all_info['most_popular_q1_answer'] == 'older' %} старшего поколения
+        <ul class="list-group">
+            <li class="list-group-item">скорее характерной для представителей
+                <b>{% if all_info['most_popular_q1_answer'] == 'older' %} старшего поколения
                 {% else %} молодого поколения
-                {% endif %}
-                (так ответили {{ all_info['most_popular_q1_answer_percentage'] }}% опрошенных);
+                {% endif %}</b>
+                (так ответили {{ all_info['most_popular_q1_answer_percentage'] }}% опрошенных)
+            </li>
+            <li class="list-group-item">скорее характерной для людей с
+                <b>{% if all_info['most_popular_q2_answer'] == 'low' %} низкой культурой речи
+                {% else %} высокой культурой речи
+                {% endif %}</b>
+                (так ответили {{ all_info['most_popular_q2_answer_percentage'] }}% опрошенных)
+            </li>
+            <li class="list-group-item">скорее
+                <b>{% if all_info['most_popular_q3_answer'] == 'colloquial' %} разговорной
+                {% elif all_info['most_popular_q3_answer'] == 'neutral' %} нейтральной
+                {% else %} книжной
+                {% endif %}</b> по стилистической окраске
+                (так ответили {{ all_info['most_popular_q3_answer_percentage'] }}% опрошенных)
+            </li>
+            <li class="list-group-item">скорее
+                <b>{% if all_info['most_popular_q4_answer'] == 'typical' %} характерной для речи интеллигентного
+                    человека, чем не характерной
+                {% else %} не характерной для речи интеллигентного человека
+                {% endif %}</b>
+                (так ответили {{ all_info['most_popular_q4_answer_percentage'] }}% опрошенных)
             </li>
         </ul>
 {% endblock %}

@@ -11,7 +11,8 @@ matplotlib.use('agg')  # чтобы избежать UserWarning: Starting a Mat
 # fail (https://stackoverflow.com/questions/69924881/userwarning-starting-a-matplotlib-gui-outside-of-the-main-thread
 # -will-likely-fa)
 
-app = Flask(__name__, static_folder='/home/sofyavikhlyantseva/hw4_ling_questionnaire/questionnaire/static')  # instance Flaskа
+app = Flask(__name__, static_folder='/home/sofyavikhlyantseva/hw4_ling_questionnaire/questionnaire/static')  # instance
+# Flaskа
 app.config['SQLALCHEMY_DATABASE_URI'] = \
     'sqlite:////home/sofyavikhlyantseva/hw4_ling_questionnaire/questionnaire/questionnaire.db'  # подключение БД
 # (sqlite:/// - это тип базы; относительные пути не работают, поэтому указываем абсолютный)

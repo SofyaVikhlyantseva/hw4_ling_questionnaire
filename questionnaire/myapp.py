@@ -1,4 +1,5 @@
 # Основной файл с Python-кодом веб-приложения
+from typing import Any
 from flask import Flask, render_template, request, redirect, url_for  # Flask — микро-фреймворк для создания
 # веб-приложений на Python
 from sqlalchemy import func
@@ -87,10 +88,13 @@ def answer_process():
 @app.route('/statistics')
 def statistics():
     # Создаём словарь, куда будем записывать всю статистику
-    all_info = {'total_num_of_respondents': Users.query.count(),  # общее число опрошенных
-                'age_max': db.session.query(func.max(Users.age)).scalar(),  # максимальный возраст информантов
-                'age_min': db.session.query(func.min(Users.age)).scalar(),  # минимальный возраст информантов
-                'age_mean': round(db.session.query(func.avg(Users.age)).scalar())}  # средний возраст информантов,
+    all_info: dict[str, int | dict | Any] = {'total_num_of_respondents': Users.query.count(),  # общее число опрошенных
+                                             'age_max': db.session.query(func.max(Users.age)).scalar(),
+                                             # максимальный возраст информантов
+                                             'age_min': db.session.query(func.min(Users.age)).scalar(),
+                                             # минимальный возраст информантов
+                                             'age_mean': round(db.session.query(
+                                                 func.avg(Users.age)).scalar())}  # средний возраст информантов,
     # округлённый до ближайшего целого
     # Распределение информантов по уровню образования
     level_of_education_counts = db.session.query(
@@ -110,14 +114,40 @@ def statistics():
     plt.pie(sizes, labels=labels, autopct='%.2f')
     plt.title('Распределение информантов по уровню образования')
     # Сохраняем график в папку static как картинку через plt.savefig()
-    plt.savefig('/home/sofyavikhlyantseva/hw4_ling_questionnaire/questionnaire/static/level_of_education_distribution.png')
+    plt.savefig('static/level_of_education_distribution.png')
     plt.clf()  # для очистки текущего графика (чтобы labels предыдущей диаграммы не накладывались на новые)
+    # Распределение информантов по профилю образования/сфере текущей проф. деятельности
+    specialization_counts = db.session.query(
+        Users.specialization, func.count(Users.specialization)).group_by(Users.specialization).all()
+    all_info['specialization'] = {item[0]: round((item[1] / all_info['total_num_of_respondents']) * 100, 2) for item in
+                                  specialization_counts}
     # Самый частый ответ на вопрос 1
     most_popular_q1_answer = db.session.query(Answers.q1, func.count(Answers.q1)).group_by(Answers.q1). \
         order_by(func.count(Answers.q1).desc()).first()
     all_info['most_popular_q1_answer'] = most_popular_q1_answer[0]
     # Процентная доля давших самый частый ответ на вопрос 1
     all_info['most_popular_q1_answer_percentage'] = round((most_popular_q1_answer[1] /
+                                                           all_info['total_num_of_respondents']) * 100, 2)
+    # Самый частый ответ на вопрос 2
+    most_popular_q2_answer = db.session.query(Answers.q2, func.count(Answers.q2)).group_by(Answers.q2). \
+        order_by(func.count(Answers.q2).desc()).first()
+    all_info['most_popular_q2_answer'] = most_popular_q2_answer[0]
+    # Процентная доля давших самый частый ответ на вопрос 2
+    all_info['most_popular_q2_answer_percentage'] = round((most_popular_q2_answer[1] /
+                                                           all_info['total_num_of_respondents']) * 100, 2)
+    # Самый частый ответ на вопрос 3
+    most_popular_q3_answer = db.session.query(Answers.q3, func.count(Answers.q3)).group_by(Answers.q3). \
+        order_by(func.count(Answers.q3).desc()).first()
+    all_info['most_popular_q3_answer'] = most_popular_q3_answer[0]
+    # Процентная доля давших самый частый ответ на вопрос 3
+    all_info['most_popular_q3_answer_percentage'] = round((most_popular_q3_answer[1] /
+                                                           all_info['total_num_of_respondents']) * 100, 2)
+    # Самый частый ответ на вопрос 4
+    most_popular_q4_answer = db.session.query(Answers.q4, func.count(Answers.q4)).group_by(Answers.q4). \
+        order_by(func.count(Answers.q4).desc()).first()
+    all_info['most_popular_q4_answer'] = most_popular_q4_answer[0]
+    # Процентная доля давших самый частый ответ на вопрос 4
+    all_info['most_popular_q4_answer_percentage'] = round((most_popular_q4_answer[1] /
                                                            all_info['total_num_of_respondents']) * 100, 2)
     return render_template('statistics.html', all_info=all_info)  # порождение HTML по шаблону statistics.html с
     # передачей переменной all_info
